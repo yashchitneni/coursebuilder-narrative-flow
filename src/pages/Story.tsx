@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Github, ExternalLink, Linkedin, Play, CheckCircle, Brain, Cpu, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -67,26 +66,20 @@ const Story = () => {
       {/* Section 1: The Hook - Above the Fold */}
       <section 
         ref={el => sectionsRef.current[0] = el}
-        className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"
+        className="relative h-screen flex items-center justify-center overflow-hidden"
       >
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 animate-pulse">
-            <div className="w-full h-full bg-gradient-to-r from-purple-500/20 to-blue-500/20"></div>
-          </div>
-          {/* Floating thumbnails simulation */}
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-16 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded opacity-20 animate-bounce"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: `${3 + Math.random() * 2}s`
-              }}
-            />
-          ))}
+        {/* YouTube Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <iframe
+            className="absolute top-1/2 left-1/2 w-[177.77777778vh] h-[56.25vw] min-h-full min-w-full transform -translate-x-1/2 -translate-y-1/2"
+            src="https://www.youtube.com/embed/nuMz-Y0Q7sM?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&playlist=nuMz-Y0Q7sM"
+            title="Background Video"
+            frameBorder="0"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          ></iframe>
+          {/* Dark overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
 
         {/* Hero Content */}
