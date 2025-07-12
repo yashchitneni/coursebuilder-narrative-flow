@@ -71,7 +71,9 @@ const Story = () => {
       >
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%239C92AC\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"4\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] animate-pulse"></div>
+          <div className="absolute inset-0 animate-pulse">
+            <div className="w-full h-full bg-gradient-to-r from-purple-500/20 to-blue-500/20"></div>
+          </div>
           {/* Floating thumbnails simulation */}
           {[...Array(12)].map((_, i) => (
             <div
@@ -111,21 +113,17 @@ const Story = () => {
       {/* Section 2: The Problem & The Guide */}
       <section 
         ref={el => sectionsRef.current[1] = el}
-        className="relative h-screen flex items-center justify-between px-8 lg:px-16 overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, 
-            hsl(${240 + scrollY * 0.1}, 20%, ${Math.max(5, 15 - scrollY * 0.01)}%), 
-            hsl(${220 + scrollY * 0.1}, 25%, ${Math.max(8, 20 - scrollY * 0.01)}%))`
-        }}
+        className="relative h-screen flex items-center justify-between px-8 lg:px-16 overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900"
       >
         {/* Library Background Effect */}
         <div 
           className="absolute inset-0 opacity-20"
           style={{
             transform: `translateY(${scrollY * 0.3}px)`,
-            background: `radial-gradient(ellipse at center, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`
           }}
-        />
+        >
+          <div className="w-full h-full bg-gradient-to-r from-blue-500/30 to-purple-500/30"></div>
+        </div>
 
         {/* Curio Character */}
         <div className="flex-1 flex justify-center items-center">
