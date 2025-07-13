@@ -1,12 +1,16 @@
 
-import React from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import React, { useEffect, useRef, useState } from 'react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from '@/components/ui/carousel';
 
 interface InteractiveLearningSectionProps {
   sectionsRef: React.MutableRefObject<(HTMLElement | null)[]>;
 }
 
 const InteractiveLearningSection: React.FC<InteractiveLearningSectionProps> = ({ sectionsRef }) => {
+  const [isActive, setIsActive] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const sectionRef = useRef<HTMLElement>(null);
+
   const questionTypes = [
     {
       id: 'hotspot',
@@ -27,7 +31,7 @@ const InteractiveLearningSection: React.FC<InteractiveLearningSectionProps> = ({
       headline: 'Understand Key Relationships.',
       body: 'Move beyond simple facts. Our Matching Questions ensure learners grasp how core concepts connect and relate to each other, reinforcing deeper understanding.',
       demo: (
-        <div className="aspect-video bg-gray-800 rounded-lg p-4">
+        <div className="aspect-video bg-gray-800 rounded-lg p-4 relative">
           <div className="grid grid-cols-2 gap-4 h-full">
             <div className="space-y-2">
               <div className="h-8 bg-blue-500/50 rounded flex items-center px-3 text-white text-sm">Concept A</div>
@@ -51,7 +55,7 @@ const InteractiveLearningSection: React.FC<InteractiveLearningSectionProps> = ({
       headline: 'Master Processes and Flows.',
       body: 'For procedural knowledge, our Sequencing Questions challenge users to reconstruct workflows, proving they have mastered the entire process from start to finish.',
       demo: (
-        <div className="aspect-video bg-gray-800 rounded-lg p-4">
+        <div className="aspect-video bg-gray-800 rounded-lg p-4 relative">
           <div className="space-y-3">
             {[1, 2, 3, 4].map((num) => (
               <div key={num} className="flex items-center gap-3 h-8 bg-gray-700 rounded px-3">
@@ -69,9 +73,92 @@ const InteractiveLearningSection: React.FC<InteractiveLearningSectionProps> = ({
     }
   ];
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsActive(entry.isIntersecting && entry.intersectionRatio > 0.5);
+      },
+      {
+        threshold: [0.5],
+        rootMargin: '-10% 0px -10% 0px'
+      }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || !api) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      
+      if (e.deltaY > 0) {
+        api.scrollNext();
+      } else if (e.deltaY < 0) {
+        api.scrollPrev();
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      const startY = touch.clientY;
+      const startX = touch.clientX;
+
+      const handleTouchMove = (moveEvent: TouchEvent) => {
+        moveEvent.preventDefault();
+        const currentTouch = moveEvent.touches[0];
+        const deltaY = startY - currentTouch.clientY;
+        const deltaX = startX - currentTouch.clientX;
+
+        // If horizontal movement is greater than vertical, handle as horizontal scroll
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX > 20) {
+            api.scrollNext();
+          } else if (deltaX < -20) {
+            api.scrollPrev();
+          }
+        } else {
+          // Vertical movement - treat as carousel navigation
+          if (deltaY > 20) {
+            api.scrollNext();
+          } else if (deltaY < -20) {
+            api.scrollPrev();
+          }
+        }
+      };
+
+      const handleTouchEnd = () => {
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+      };
+
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+    };
+
+    if (isActive) {
+      document.addEventListener('wheel', handleWheel, { passive: false });
+      document.addEventListener('touchstart', handleTouchStart, { passive: false });
+    }
+
+    return () => {
+      document.removeEventListener('wheel', handleWheel);
+      document.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, [isActive, api]);
+
   return (
     <section 
-      ref={el => sectionsRef.current[4] = el}
+      ref={(el) => {
+        sectionsRef.current[2] = el;
+        sectionRef.current = el;
+      }}
       className="relative h-screen bg-gradient-to-r from-purple-900 to-pink-900 overflow-hidden"
     >
       <div className="h-full flex items-center justify-center">
@@ -79,9 +166,19 @@ const InteractiveLearningSection: React.FC<InteractiveLearningSectionProps> = ({
           <div className="text-center mb-12">
             <h2 className="text-5xl font-bold text-white mb-4">Deeply Interactive Learning</h2>
             <p className="text-xl text-gray-300">Innovative quiz types that make learning engaging</p>
+            {isActive && (
+              <p className="text-sm text-gray-400 mt-2">Scroll to navigate through question types</p>
+            )}
           </div>
           
-          <Carousel className="w-full">
+          <Carousel 
+            className="w-full"
+            setApi={setApi}
+            opts={{
+              align: "start",
+              loop: false,
+            }}
+          >
             <CarouselContent>
               {questionTypes.map((type) => (
                 <CarouselItem key={type.id}>
