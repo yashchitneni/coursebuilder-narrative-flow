@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Brain } from 'lucide-react';
 
@@ -12,16 +13,13 @@ const MeetCurioSection: React.FC<MeetCurioSectionProps> = ({ sectionsRef, scroll
       ref={el => sectionsRef.current[1] = el}
       className="relative h-screen flex items-center justify-between px-8 lg:px-16 overflow-hidden"
     >
-      {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source src="https://cdn.midjourney.com/video/ac364652-b4a9-4dea-a60f-4e23f5ef677e/3.mp4" type="video/mp4" />
-      </video>
+      {/* Image Background */}
+      <div 
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-0"
+        style={{
+          backgroundImage: `url('/lovable-uploads/30f9ef9e-c142-4b13-af37-e23958f44a05.png')`
+        }}
+      />
 
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/40 z-10"></div>
