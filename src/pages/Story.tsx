@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Github, ExternalLink, Linkedin, Play, CheckCircle, Brain, Cpu, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -85,11 +86,11 @@ const Story = () => {
         {/* Hero Content */}
         <div className="text-center z-10 max-w-4xl mx-auto px-6">
           <div className="animate-fade-in">
-            <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent mb-6">
-              CourseBuilder
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              The world's best teachers are on YouTube.
             </h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed">
-              Transforming Passive Videos into Active Learning Experiences
+            <p className="text-2xl md:text-3xl text-gray-200 font-medium">
+              But the classroom is broken.
             </p>
           </div>
         </div>
