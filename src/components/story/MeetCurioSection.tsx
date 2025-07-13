@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Brain } from 'lucide-react';
 
@@ -11,11 +10,25 @@ const MeetCurioSection: React.FC<MeetCurioSectionProps> = ({ sectionsRef, scroll
   return (
     <section 
       ref={el => sectionsRef.current[1] = el}
-      className="relative h-screen flex items-center justify-between px-8 lg:px-16 overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900"
+      className="relative h-screen flex items-center justify-between px-8 lg:px-16 overflow-hidden"
     >
+      {/* Video Background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="https://cdn.midjourney.com/video/ac364652-b4a9-4dea-a60f-4e23f5ef677e/3.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/40 z-10"></div>
+
       {/* Background Effect */}
       <div 
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-20 z-20"
         style={{
           transform: `translateY(${scrollY * 0.3}px)`,
         }}
@@ -24,7 +37,7 @@ const MeetCurioSection: React.FC<MeetCurioSectionProps> = ({ sectionsRef, scroll
       </div>
 
       {/* Curio Character */}
-      <div className="flex-1 flex justify-center items-center">
+      <div className="flex-1 flex justify-center items-center relative z-30">
         <div className="relative">
           {/* Main Character Circle */}
           <div className="w-80 h-80 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-2xl relative overflow-hidden">
@@ -55,7 +68,7 @@ const MeetCurioSection: React.FC<MeetCurioSectionProps> = ({ sectionsRef, scroll
       </div>
 
       {/* Description Text */}
-      <div className="flex-1 max-w-xl">
+      <div className="flex-1 max-w-xl relative z-30">
         <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
           <p className="text-xl text-gray-200 leading-relaxed">
             "I'm your personalized AI librarian. I turn any passive video into an active learning experience by building a structured course with interactive quizzes—all in seconds. Here's how it works."
